@@ -7,6 +7,8 @@ import numpy as np
 import scipy
 import glob
 from sklearn.neighbors import KNeighborsClassifier as KNN
+import numpy as np
+from sklearn import linear_model
 #from sklearn import linear_model as lm
 #-------
 def trainKNN():
@@ -28,6 +30,8 @@ def trainKNN():
         img=img.flatten()
         dataset.append(np.array(img,dtype=int))
     knn=KNN(n_neighbors=1)
+    clf = linear_model.SGDClassifier()
+    #clf.partial_fit(X, Y,range(1,101))
     #print(dataset)
     knn.fit(dataset,labels)
     #end=time.time()
