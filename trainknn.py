@@ -11,13 +11,13 @@ from sklearn.neighbors import KNeighborsClassifier as KNN
 #-------
 def trainKNN():
     #start=time.time()
-    dirs = next(os.walk("C:/img/dataset"))[1]
+    dirs = next(os.walk("img/dataset"))[1]
     dirs=sorted(dirs,key=lambda x:int(x))
     dataset=[]
     imgs=[]
     labels=[]
     for d in dirs:
-        files=glob.glob('C:/img/dataset/'+d+'/*.jpg')
+        files=glob.glob('img/dataset/'+d+'/*.jpg')
         for file in files:
             img=cv2.imread(file)
             img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)

@@ -39,7 +39,7 @@ def saveimage(client,addr,knn):
     dataType=str(buf)
     print ("receiving %s bytes" % size)
     if dataType == "b'image'":
-        imagename='C:/img/'+str(time.time())+str(addr)
+        imagename='img/'+str(time.time())+str(addr)
         with open(imagename+'.jpg', 'wb') as img:
             btr=10
             while size>0:
@@ -68,7 +68,7 @@ def saveimage(client,addr,knn):
                 stop = False
             else:
                 buf += c
-        imgpath = 'C:/img/'
+        imgpath = 'img/'
         imagename = str(time.time())+str(addr)
         with open(imgpath+imagename+'.jpg', 'wb') as img:
             btr=10
