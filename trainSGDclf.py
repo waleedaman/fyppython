@@ -6,12 +6,11 @@ from skimage import measure
 import numpy as np
 import scipy
 import glob
-from sklearn.neighbors import KNeighborsClassifier as KNN
 import numpy as np
 from sklearn import linear_model
 #from sklearn import linear_model as lm
 #-------
-def trainKNN():
+def trainSGDClf():
     #start=time.time()
     dirs = next(os.walk("img/dataset"))[1]
     dirs=sorted(dirs,key=lambda x:int(x))
@@ -29,11 +28,9 @@ def trainKNN():
     for img in imgs:
         img=img.flatten()
         dataset.append(np.array(img,dtype=int))
-    knn=KNN(n_neighbors=1)
     clf = linear_model.SGDClassifier()
-    #clf.partial_fit(X, Y,range(1,101))
+    clf.partial_fit(X, Y,range(0,101))
     #print(dataset)
-    knn.fit(dataset,labels)
     #end=time.time()
     #print(end-start)
-    return knn
+    return clf

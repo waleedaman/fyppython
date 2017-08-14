@@ -7,7 +7,7 @@ Created on Sat Aug  5 09:56:40 2017
 import corrections
 import socket
 import plot_labels
-import trainknn
+import trainSGDclf as SGD
 import recognition
 import generatestring
 import threading
@@ -16,7 +16,7 @@ import sys
 import time
 #imports-
 
-def saveimage(client,addr,knn):
+def saveimage(client,addr,clf):
     buf = b''
     c=''
     stop=True
@@ -52,7 +52,7 @@ def saveimage(client,addr,knn):
         client.close()
         time.sleep(8)
         plot_labels.segmentation(imagename)
-        labels = recognition.predict(knn,imagename)
+        labels = recognition.predict(clf,imagename)
         string = generatestring.maketext(labels)
         sock = socket.socket()
         sock.connect((addr[0],2023))
@@ -80,14 +80,18 @@ def saveimage(client,addr,knn):
                 size=size-btr
         client.close()
         print(text)
-        corrections.addcorrection(buf.decode("utf-8"),imagename)
-        global retrain
-        retrain = True
+        (img,folder) = corrections.addcorrection(buf.decode("utf-8"),imagename)
+        imgar=[]
+        label=[]
+        label.insert(folder)
+        imgar.insert(img)
+        global clf
+        clf.partial_fit(imgar,label)
 
 
-def callmethods(client,addr,knn):
+def callmethods(client,addr,clf):
     start=time.time()
-    saveimage(client,addr,knn)
+    saveimage(client,addr,clf)
     end=time.time()
     print(end-start)
 
@@ -99,16 +103,12 @@ except (socket.error):
     sys.exit()
 print ('Socket Created')
 s.bind(address)
-knn=trainknn.trainKNN()
-retrain = False
+clf = SGD.trainSGDClf()
 s.listen(5)
 while True:
     (client, addr) = s.accept()
     print ('got connected from', client,addr)
-    if retrain:
-        knn=trainknn.trainKNN()
-        retrain = False
-    thread=threading.Thread(target=callmethods,args=(client,addr,knn))
+    thread=threading.Thread(target=callmethods,args=(client,addr,clf))
     print('started thread')
     thread.start()
     

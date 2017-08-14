@@ -8,14 +8,13 @@ import scipy
 import cv2
 import numpy as np
 import os
-import trainknn
 
 def sortfiles(x):
     x=x.replace(".jpg","")
     x=int(x)
     return x
 
-def predict(knn,imagepath):
+def predict(clf,imagepath):
     files=next(os.walk(imagepath+"/"))[2]
     files=sorted(files,key=lambda x:sortfiles(x))
     images=[]
@@ -26,6 +25,6 @@ def predict(knn,imagepath):
         img=img.flatten()
         img=np.array(img,dtype=int)
         images.append(img)
-    arr=knn.predict(images)
+    arr=clf.predict(images)
     return arr
 #predict(trainknn.trainKNN(),"C:/img/1502095133.3304038('192.168.8.119', 53203)")
