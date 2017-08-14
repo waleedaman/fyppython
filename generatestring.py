@@ -6,7 +6,6 @@ Created on Mon Aug  7 10:21:22 2017
 """
 import pymongo
 import numpy as np
-import json
 from pymongo import MongoClient
 def maketext(labels):
     connection = MongoClient()
