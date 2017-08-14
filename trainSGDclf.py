@@ -29,7 +29,9 @@ def trainSGDClf():
         img=img.flatten()
         dataset.append(np.array(img,dtype=int))
     clf = linear_model.SGDClassifier()
-    clf.partial_fit(X, Y,range(0,101))
+    validlabels = list(range(1,101))
+    validlabels=[str(i) for i in validlabels]
+    clf.partial_fit(dataset, labels, validlabels)
     #print(dataset)
     #end=time.time()
     #print(end-start)

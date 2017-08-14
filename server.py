@@ -83,9 +83,8 @@ def saveimage(client,addr,clf):
         (img,folder) = corrections.addcorrection(buf.decode("utf-8"),imagename)
         imgar=[]
         label=[]
-        label.insert(folder)
-        imgar.insert(img)
-        global clf
+        label.append(folder)
+        imgar.append(img)
         clf.partial_fit(imgar,label)
 
 
