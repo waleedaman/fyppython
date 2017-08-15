@@ -37,6 +37,7 @@ def saveimage(client,addr,knn):
         else:
         	buf+=c
     dataType=str(buf)
+    #sock=client
     print ("receiving %s bytes" % size)
     if dataType == "b'image'":
         imagename='img/'+str(time.time())+str(addr)
@@ -49,14 +50,17 @@ def saveimage(client,addr,knn):
                 img.write(data)
                 size=size-btr
             img.close()
-        client.close()
-        time.sleep(8)
+        #client.close()
+        time.sleep(1)
         plot_labels.segmentation(imagename)
         labels = recognition.predict(knn,imagename)
         string = generatestring.maketext(labels)
-        sock = socket.socket()
-        sock.connect((addr[0],2023))
-        sock.send(string.encode())
+        string = string + '\n'
+        client.send(string.encode())
+        #client.close()
+        #sock = socket.socket()
+        #sock.connect((addr[0],2023))
+        #sock.send(string.encode())
     if dataType == "b'correction'":
         print('correction')
         stop = True
@@ -79,7 +83,6 @@ def saveimage(client,addr,knn):
                 img.write(data)
                 size=size-btr
         client.close()
-        print(text)
         corrections.addcorrection(buf.decode("utf-8"),imagename)
         global retrain
         retrain = True

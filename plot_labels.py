@@ -10,7 +10,7 @@ import os
 
 def segmentation(imgname):
     #start=time.time()
-    image = scipy.misc.imread(imgname+'.jpg')
+    image = cv2.imread(imgname+'.jpg')
     image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     (t,image)=cv2.threshold(image,200,1,cv2.THRESH_BINARY)
     image=(1-image)
